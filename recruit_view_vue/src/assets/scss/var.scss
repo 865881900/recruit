@@ -1,0 +1,115 @@
+// 基本颜色(可以使用lighten，darken)
+$primary: #1890FF !default;
+$red: #F32727 !default;
+$orange: #e7a939 !default;
+$yellow: #ffc400 !default;
+$green: #80b14d !default;
+$light-blue: #418ee7 !default;
+$gray: #555 !default;
+$light-gray: #666666 !default;
+// 常用颜色
+$line: #D9D9D9 !default;
+$icon: #888888 !default;
+$disable: #999999 !default;
+// 用于表格，下拉，树，日期
+$hover: #f5f7fa!default;
+//背景色-浅
+$backColor:#364860 !default;
+$backColor_deep:#2A3950 !default;
+$backColor_theme:#009EFF !default;
+
+$radius: 2px!default;
+$back_one:#364860 !important;
+$back_two:#2A3950	!important;
+
+$--namespace: glo;
+
+@mixin b($block) {
+    $block: $--namespace + '-'+ $block;
+    .#{$block} {
+        @content;
+    }
+};
+
+@mixin e($element) {
+    $parent: &;
+    $element: $parent +"__"+ $element;
+    @at-root {
+        #{$element} {
+            @content;
+        }
+    }
+};
+
+@mixin m($modifier) {
+    $parent: &;
+    $modifier: $parent +'--'+ $modifier;
+    @at-root {
+        #{$modifier} {
+            @content;
+        }
+    }
+};
+
+// float left & right
+@mixin float($float:left) {
+  float: $float;
+  display: inline;
+}
+
+@mixin clearBoth {
+  $selector: &;
+
+  @at-root {
+
+    #{$selector}::before,
+    #{$selector}::after {
+      content: '';
+      display: table;
+    }
+
+    ;
+
+    #{$selector}::after {
+      clear: both;
+    }
+
+    ;
+  }
+}
+
+@mixin position ($type: static, $top: auto, $right: auto, $bottom: auto, $left: auto) {
+  $map: (top: $top,
+      right: $right,
+      bottom: $bottom,
+      left: $left);
+  position: $type;
+
+  @each $key,
+  $val in $map {
+    @if ($val and $val !=auto) {
+      #{$key}: #{$val}
+    }
+  }
+}
+
+// clear
+@mixin clear {
+  *zoom: 1;
+
+  &:before,
+  &:after {
+    content: "";
+    display: table;
+    height: 0;
+  }
+
+  &:after {
+    clear: both;
+  }
+}
+
+//@include transition;
+@mixin transition($transition...) {
+  transition-duration: 0.3s;
+}

@@ -1,0 +1,80 @@
+{
+  "pages": [
+    //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+    {
+      "path": "pages/index/index",
+      //名字叫不叫index无所谓，位置在第一个，就是首页
+      "style": {
+        "navigationBarTitleText": "招聘详情"
+        //页面标题
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/resume/index",
+      "style": {
+        "navigationBarTitleText": "我的简历"
+      }
+    },
+    {
+      "path": "pages/register/index",
+      "style": {
+        "navigationBarTitleText": "注册"
+      }
+    },
+    {
+      "path": "pages/my/index",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/resumeBasics/index",
+      "style": {
+        "navigationBarTitleText": "基本信息"
+      }
+    },
+    {
+      "path": "pages/resumeWork/index",
+      "style": {
+        "navigationBarTitleText": "工作经历"
+      }
+    },
+    {
+      "path": "pages/resumeEducation/index",
+      "style": {
+        "navigationBarTitleText": "教育经历"
+      }
+    }
+  ],
+  "tabBar": {
+    "selectedColor": "#409eff",
+    "color": "#cccccc",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "static/tab/selectedIndex.png",
+        "selectedIconPath": "static/tab/index.png",
+        "text": "简历填写"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "iconPath": "static/tab/selectedMy.png",
+        "selectedIconPath": "static/tab/my.png",
+        "text": "我的简历"
+      }
+    ]
+  },
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "uni-app",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  }
+}
