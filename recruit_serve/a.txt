@@ -1,0 +1,91 @@
+-- 企业表
+CREATE TABLE IF NOT EXISTS Company (
+  companyID INT AUTO_INCREMENT PRIMARY KEY,
+  companyName VARCHAR(255) NOT NULL COMMENT '企业名称',
+  companyLogo VARCHAR(255) COMMENT '企业logo图片URL',
+  companyAddress VARCHAR(255) COMMENT '企业地址',
+  companySize VARCHAR(100) COMMENT '企业规模',
+  companyIntroduction TEXT COMMENT '企业介绍'
+);
+-- 岗位表
+CREATE TABLE IF NOT EXISTS Position (
+  positionID INT AUTO_INCREMENT PRIMARY KEY,
+  positionName VARCHAR(255) NOT NULL COMMENT '岗位名称',
+  positionDescription TEXT COMMENT '岗位说明',
+  recruitmentNumber INT COMMENT '岗位招聘人数',
+  salaryRange VARCHAR(100) COMMENT '岗位薪资范围',
+  highlight VARCHAR(255) COMMENT '岗位亮点',
+  responsibilities TEXT COMMENT '岗位职责',
+  requirements TEXT COMMENT '岗位要求',
+  educationRequirement VARCHAR(255) COMMENT '学历要求'
+);
+-- 简历表
+CREATE TABLE IF NOT EXISTS Resume (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  resumeID VARCHAR(255) COMMENT '简历id',
+  name VARCHAR(100) NOT NULL COMMENT '姓名',
+  avatar VARCHAR(255) COMMENT '头像URL',
+  gender VARCHAR(100) COMMENT '性别',
+  birthday DATE COMMENT '生日',
+  email VARCHAR(255) COMMENT '邮箱',
+  iDNumber CHAR(18) COMMENT '身份证号',
+  phoneNumber VARCHAR(15) COMMENT '手机号',
+  weChat VARCHAR(50) COMMENT '微信号',
+  ethnicity VARCHAR(50) COMMENT '民族',
+  politicalStatus VARCHAR(50) COMMENT '政治面貌',
+  earliestStartDate DATE COMMENT '最早可入职时间',
+  socialProfile VARCHAR(255) COMMENT '个人社交主页',
+  jobSeekerStatus VARCHAR(50) COMMENT '求职身份',
+  personalStatement TEXT COMMENT '个人说明'
+);
+
+-- 投递记录表
+CREATE TABLE IF NOT EXISTS Applications (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  applicationID VARCHAR(255) COMMENT '投递id',
+  companyID VARCHAR(255) COMMENT '企业ID',
+  positionID VARCHAR(255) COMMENT '岗位ID',
+  resumeID VARCHAR(255) COMMENT '简历ID',
+  createDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  ADD COLUMN updateDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP;
+  FOREIGN KEY (resumeID) REFERENCES Resume(resumeID),
+  FOREIGN KEY (companyID) REFERENCES Company(companyID),
+  FOREIGN KEY (positionID) REFERENCES Positions(positionID)
+);
+-- 简历教育经历表
+CREATE TABLE IF NOT EXISTS EducationHistory (
+    educationID INT AUTO_INCREMENT PRIMARY KEY,
+    schoolName VARCHAR(255) NOT NULL COMMENT '学校名称',
+    major VARCHAR(255) NOT NULL COMMENT '专业名称',
+    degree VARCHAR(100) NOT NULL COMMENT '学历',
+    city VARCHAR(100) COMMENT '城市',
+    startDate DATE NOT NULL COMMENT '在校开始时间',
+    endDate DATE  NOT NULL COMMENT '在校结束时间',
+    educationDescription TEXT COMMENT '教育描述',
+    resumeID INT,
+    FOREIGN KEY (resumeID) REFERENCES Resume(resumeID)
+);
+
+-- 工作经历表
+CREATE TABLE IF NOT EXISTS WorkExperience (
+    ExperienceID INT AUTO_INCREMENT PRIMARY KEY,
+    JobType VARCHAR(100) COMMENT '工作类型',
+    CompanyName VARCHAR(255) NOT NULL COMMENT '企业名称',
+    PositionTitle VARCHAR(255) NOT NULL COMMENT '岗位',
+    City VARCHAR(100) COMMENT '城市',
+    StartDate DATE NOT NULL COMMENT '工作开始时间',
+    EndDate DATE COMMENT '工作结束时间',
+    JobDescription TEXT COMMENT '工作内容',
+    resumeID INT,
+    FOREIGN KEY (resumeID) REFERENCES Resume(resumeID)
+);
+
+-- 证书/技能表
+CREATE TABLE IF NOT EXISTS CertificatesSkills (
+    CertificateSkillID INT AUTO_INCREMENT PRIMARY KEY,
+    Type VARCHAR(100) COMMENT '类型',
+    Name VARCHAR(255) NOT NULL COMMENT '名称',
+    ProficiencyLevel VARCHAR(100) COMMENT '掌握程度',
+    resumeID INT,
+    FOREIGN KEY (resumeID) REFERENCES Resume(resumeID)
+);

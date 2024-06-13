@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "outDir": "./dist", //生成的所有文件放在built目录下
+    "allowJs": true, //接受JavaScript做为输入
+    "target": "es2017", //将JavaScript代码降级到低版本比如ECMAScript 5
+    "module": "commonjs",
+    "baseUrl": "./", //编译器到哪里去查找模块
+    "paths": {
+      "*": ["*"]
+    },
+    "rootDirs": [  //src/views 和 generated/templates/views 文件下的所有文件都放在一个虚拟的文件夹中,,,以至于两个目录下的文件可以直接使用  ./xxx.ts 来获取
+      "src/views",
+      "generated/templates/views"
+    ],
+    "declaration": true,
+    "emitDecoratorMetadata":true,
+    "experimentalDecorators":true
+  },
+  "include": [ //读取所有可识别的src目录下的文件
+    "."
+  ],
+  "noImplicitReturns": true,
+  "noFallthroughCasesInSwitch": true,
+  "noEmitOnError": true
+}
