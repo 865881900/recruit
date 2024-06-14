@@ -18,9 +18,14 @@ export const constantRoutes = [
   },
   {
     path: '/resumeInfo',
-    component: () => import('@/views/resumeInfo'),
-    hidden: true
+    name: 'resumeInfo',
+    component: () => import('@/views/resume/resumeInfo'),
+    meta: {
+      title: '投递详情',
+      menu: false
+    }
   },
+
   {
     path: '/',
     component: Layout,
@@ -70,15 +75,6 @@ export const constantRoutes = [
           title: '投递列表'
         }
       },
-      {
-        path: 'resumeInfo',
-        name: 'resumeInfo',
-        component: () => import('@/views/resume/resumeInfo'),
-        meta: {
-          title: '投递详情',
-          menu: false
-        }
-      }
     ]
   },
   // {
