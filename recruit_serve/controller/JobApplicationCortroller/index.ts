@@ -777,6 +777,24 @@ export class JobApplicationController {
             res.send(sendData.getNoSendData(e.message))
         }
     }
+    // 根据投递ID返回简历详情
+    async getApplication(req, res) {
+        const sendData = new SendData()
+        try {
+            const applicationID = req.query.applicationID;
+            if (!applicationID) {
+                res.send(sendData.getNoSendData('投递applicationID不能为空'))
+                return
+            }
+            const application: Application = await this.jobApplicationServer.getApplication(applicationID);
+
+            const resume: Resume = await this.jobApplicationServer.getResumeByResumeID(application.resumeID);
+            resume.key = application.applicationKey;
+            res.send(sendData.getOkSendData(resume));
+        } catch (e) {
+            res.send(sendData.getNoSendData(e.message))
+        }
+    }
 
     // 返回所有的枚举
     async getEnumMap(req, res) {

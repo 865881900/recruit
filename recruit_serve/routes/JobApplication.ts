@@ -20,6 +20,7 @@ router.get('/getPositionByPositionID', jobApplicationController.getPositionByPos
 router.post('/createResume', jobApplicationController.createResume.bind(jobApplicationController));
 router.post('/updateResume', jobApplicationController.updateResume.bind(jobApplicationController));
 router.get('/getResumeByResumeID', jobApplicationController.getResumeByResumeID.bind(jobApplicationController));
+
 // 教育经历
 router.post('/addEducationHistory', jobApplicationController.addEducationHistory.bind(jobApplicationController));
 router.get('/removeEducationHistory', jobApplicationController.removeEducationHistory.bind(jobApplicationController));
@@ -34,6 +35,7 @@ router.get('/getWorkExperienceByExperienceID', jobApplicationController.getWorkE
 // 投递简历
 router.post('/addApplication', jobApplicationController.addApplication.bind(jobApplicationController));
 router.post('/getResumeList', jobApplicationController.getResumeList.bind(jobApplicationController));
+router.get('/getApplication', jobApplicationController.getApplication.bind(jobApplicationController));
 
 // 其他
 router.post('/getEnumMap', jobApplicationController.getEnumMap.bind(jobApplicationController));

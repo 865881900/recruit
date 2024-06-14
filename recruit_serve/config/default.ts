@@ -81,4 +81,8 @@ export const APPID = 'wxef5d2c8115a34065'
 export const SECRET = 'cb91e07ac0071dce2d304afcc26b6b83';
 
 export const LOGIN_CHECK_PATH_LIST = ['jobApplication', 'getUserinfo'];
-export const WHITE_LIST_PATH_LIST = ['/jobApplication/getResumeByResumeID', '/getFile/getP'];
+export const WHITE_LIST_PATH_LIST = [
+    '/jobApplication/getApplication',
+    '/jobApplication/download',
+    '/getFile/getP'
+];

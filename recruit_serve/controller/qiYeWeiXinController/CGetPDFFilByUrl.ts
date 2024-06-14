@@ -7,6 +7,7 @@ import {Browser} from "puppeteer";
 import {GoogleBrowserServer, getBrowser} from "../../server/GoogleBrowserServer";
 import {RequestData} from "../../utils/classList";
 import SendData from "../../models/sendData";
+import {getJobApplicationServer, JobApplicationServer} from "../../server/JobApplicationServer";
 
 
 /**
@@ -15,8 +16,9 @@ import SendData from "../../models/sendData";
 class CGetPDFFilByUrl {
     oss: OSSController
     browser: GoogleBrowserServer
-
+    private jobApplicationServer: JobApplicationServer
     constructor() {
+        this.jobApplicationServer = getJobApplicationServer()
         this.oss = getOSSController();
         this.browser = getBrowser()
     }
@@ -26,16 +28,17 @@ class CGetPDFFilByUrl {
         const sendData = new SendData();
         try {
             let that: CGetPDFFilByUrl = this;
-            const resumeID: string = req.body.resumeID;
+            const applicationID: string = req.body.applicationID;
             const fileName: string = req.body.fileName;
             let time = new Date().getTime() + '';
-            const pdfBuffer: Buffer = await that.browser.getPagePdfOrBuffer(`http://localhost:9528/#/resumeInfo?resumeID=${resumeID}&time=${time}`, time)
+            const pdfBuffer: Buffer = await that.browser.getPagePdfOrBuffer(`http://localhost:9528/#/resumeInfo?applicationID=${applicationID}&time=${time}`, time)
             // pdfBuffer = await that.browser.getPagePdfOrBuffer(`http://test.qxlyun.com/#/${navString}?ids=${fileId}&time=${time}&type=pdf`, time)
             // pdfBuffer = await that.browser.getPagePdfOrBuffer(`http://localhost:8089/#/${navString}?ids=${fileId}&time=${time}`,time)
             // const pdfBuffer: Buffer = await that.browser.getPagePdfOrBuffer(`http://qxlyun.com/jsqxpc/#/${navString}?ids=${fileId}&time=${time}&type=pdf`,time)
             const readable: Readable = Readable.from(pdfBuffer);
             let {code}: RequestData = await that.oss.upLoadingOss(fileName, readable);
             if (code == 200) {
+                await  this.jobApplicationServer.setCreatePdf(applicationID)
                 res.send(sendData.getOkSendData({
                     filePath: fileName
                 }))

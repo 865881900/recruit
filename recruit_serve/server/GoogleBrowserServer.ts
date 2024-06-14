@@ -109,8 +109,7 @@ export class GoogleBrowserServer {
         } catch (e) {
             console.log(`生成错误,关闭页面`)
             await page.close();
-            console.error(e)
-            throw  e.message
+            throw e
         }
 
     }

@@ -30,6 +30,7 @@ export class Resume {
     set birthday(value: Date) {
         this._birthday = value;
     }
+    key: string
     /**
      * 简历ID，自增主键
      */

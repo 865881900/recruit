@@ -249,6 +249,17 @@ export class ResumeDAO {
             throw e
         }
     };
+    public async selectApplicationByApplicationId(applicationID: string) {
+        try {
+            let data: any = await this.mySqlDB.executeSql(RESUMESQL.selectApplication, [
+                applicationID
+            ])
+            return data[0]
+        } catch (e) {
+            throw e
+        }
+    }
+
 
     //根据企业id,简历id,岗位id返回投递详情
     public async getApplicationByApplicationKey(
@@ -268,7 +279,7 @@ export class ResumeDAO {
         }
     };
 
-    //根据企业id,简历id,岗位id返回投递详情
+    //根据投递Id返回投递详情
     public async selectApplicationById(
         companyID: string,
         positionID: string,
@@ -285,6 +296,17 @@ export class ResumeDAO {
             throw e
         }
     };
+
+    async updateApplicationsCreatePdf(applicationID) {
+        try {
+            let data: any = await this.mySqlDB.executeSql(RESUMESQL.updateApplicationsCreatePdf, [applicationID])
+            if (data.affectedRows !== 1) {
+                throw Error('数据库操作失败')
+            }
+        } catch (e) {
+            throw e
+        }
+    }
 
     // 根据企业id, 岗位id, 投递时间分页查询简历
     async selectResumeList(

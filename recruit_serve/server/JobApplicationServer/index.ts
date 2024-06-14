@@ -36,10 +36,10 @@ export class JobApplicationServer {
                     const position = company.positionList[i];
                     promiseList.push(new Promise(async (resolve, reject) => {
                         try {
-                            const _application = await this.resumeDAO.selectApplicationById(companyID,position.positionID, resumeID);
+                            const _application = await this.resumeDAO.selectApplicationById(companyID, position.positionID, resumeID);
                             resolve()
                             position.applicationKey = _application.applicationKey
-                        }catch (e) {
+                        } catch (e) {
                             reject(e)
                         }
                     }))
@@ -381,6 +381,18 @@ export class JobApplicationServer {
         }
     }
 
+    // 根据投递ID返回简历详情
+    async getApplication(applicationID): Promise<Application> {
+        try {
+            const application: Application = await this.resumeDAO.selectApplicationByApplicationId(applicationID);
+            if (!application) {
+                throw new Error('通过applicationID没有查询到投递详情')
+            }
+            return application
+        } catch (e) {
+            throw new Error(e.message)
+        }
+    }
 
     async selectEnumMap(tableList: Array<string>): Promise<Object> {
         const enumMap = {};
@@ -474,6 +486,14 @@ export class JobApplicationServer {
             });
             pagingSearch.pageCount = pageCount as number;
             return pagingSearch
+        } catch (e) {
+            throw new Error(e.message)
+        }
+    }
+
+    async setCreatePdf(applicationID: string) {
+        try {
+            await this.resumeDAO.updateApplicationsCreatePdf(applicationID);
         } catch (e) {
             throw new Error(e.message)
         }
