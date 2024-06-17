@@ -9,6 +9,7 @@ const pdfFilByUrl = getPDFFilByUrl()
 const wordController = getWordController()
 const fileSectionToUpload = new FileSectionToUpload()
 router.post('/getP', pdfFilByUrl.getPdfByFileId.bind(pdfFilByUrl));
+router.get('/getFileUrl', pdfFilByUrl.getFileUrl.bind(pdfFilByUrl));
 // router.head('/aliyunHead', wordController.aliyunHead.bind(wordController))
 // router.get('/getWordFile', wordController.generateWordFile.bind(wordController))
 // router.post('/getWordFile', wordController.generateWordFile.bind(wordController))

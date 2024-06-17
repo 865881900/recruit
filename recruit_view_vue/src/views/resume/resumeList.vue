@@ -42,8 +42,8 @@
               clearable
               filterable
             >
-              <el-option label="招聘中" value="1" />
-              <el-option label="停止招聘" value="0" />
+              <el-option label="招聘中" value="1"/>
+              <el-option label="停止招聘" value="0"/>
             </el-select>
           </el-form-item>
         </el-form>
@@ -95,6 +95,7 @@
 <script>
 import GTable from '../../components/table/index'
 import moment from 'moment'
+import axios from "axios";
 // import { getLabelByEquals } from '@/utils'
 // import moment from 'moment'
 
@@ -121,21 +122,21 @@ export default {
         {
           'show-overflow-tooltip': true,
           label: '投递企业',
-          formatter({ row }) {
+          formatter({row}) {
             return row.company.companyName
           }
         },
         {
           'show-overflow-tooltip': true,
           label: '投递岗位',
-          formatter({ row }) {
+          formatter({row}) {
             return row.position.positionName
           }
         },
         {
           'show-overflow-tooltip': true,
           label: '岗位状态',
-          render(h, { row }) {
+          render(h, {row}) {
             return h('span', {
               style: {
                 color: row.position.positionType === '1' ? '#67C23A' : '#cb1e1e'
@@ -146,7 +147,7 @@ export default {
         {
           'show-overflow-tooltip': true,
           label: '姓名',
-          formatter({ row }) {
+          formatter({row}) {
             return row.resume.name
           }
         },
@@ -154,7 +155,7 @@ export default {
           'show-overflow-tooltip': true,
           label: '性别',
           prop: 'gender',
-          formatter({ row }) {
+          formatter({row}) {
             return row.resume.gender === '1' ? '男' : '女'
           }
         },
@@ -162,7 +163,7 @@ export default {
           'show-overflow-tooltip': true,
           label: 'email',
           prop: 'email',
-          formatter({ row }) {
+          formatter({row}) {
             return row.resume.email
           }
         },
@@ -170,7 +171,7 @@ export default {
           'show-overflow-tooltip': true,
           label: '手机号',
           prop: 'phoneNumber',
-          formatter({ row }) {
+          formatter({row}) {
             return row.resume.phoneNumber
           }
         },
@@ -178,7 +179,7 @@ export default {
           'show-overflow-tooltip': true,
           label: '微信号',
           prop: 'weChat',
-          formatter({ row }) {
+          formatter({row}) {
             return row.resume.weChat
           }
         },
@@ -186,23 +187,26 @@ export default {
           prop: 'createDate',
           'show-overflow-tooltip': true,
           label: '投递时间',
-          formatter({ row }) {
+          formatter({row}) {
             return moment(row.createDate).format('yyyy-MM-DD HH:mm:ss')
           }
         },
         {
           prop: '',
           'show-overflow-tooltip': true,
+          width: '150px',
           label: '操作',
           render(h, scope, column) {
             const buttonList = [
               {
                 text: '查看详情',
-                on: 'toResumeInfo'
+                on: 'toResumeInfo',
+                disabled: false,
               },
               {
                 text: '下载简历',
-                on: 'uploadResume'
+                on: 'uploadResume',
+                disabled: scope.row.createPdf === '0',
               }
             ]
 
@@ -211,7 +215,8 @@ export default {
                 'el-button',
                 {
                   props: {
-                    type: 'text'
+                    type: 'text',
+                    disabled: item.disabled
                   },
                   on: {
                     click() {
@@ -292,9 +297,9 @@ export default {
     async getList() {
       try {
         this.tableLoading = true
-        const { searchName: applicationKey, pageSize, page: pageNumber } = this.pageBean
-        const { companyID, positionID, date, positionType } = this.fromData
-        const { data, code, message } = await this.$http.post('/jobApplication/getResumeList', {
+        const {searchName: applicationKey, pageSize, page: pageNumber} = this.pageBean
+        const {companyID, positionID, date, positionType} = this.fromData
+        const {data, code, message} = await this.$http.post('/jobApplication/getResumeList', {
           pageSize,
           pageNumber,
           applicationKey,
@@ -328,7 +333,7 @@ export default {
     // 返回所有的企业
     async getCompanyList() {
       try {
-        const { data, code, message } = await this.$http.post('/jobApplication/getCompanyList', {
+        const {data, code, message} = await this.$http.post('/jobApplication/getCompanyList', {
           companyType: '',
           companyName: '',
           pageSize: 10000,
@@ -352,7 +357,7 @@ export default {
           return
         }
 
-        const { data, code, message } = await this.$http.post('/jobApplication/getPositionList', {
+        const {data, code, message} = await this.$http.post('/jobApplication/getPositionList', {
           companyID: this.fromData.companyID,
           pageSize: 10000,
           pageNumber: 1
@@ -373,21 +378,53 @@ export default {
 
     // 查看详情
     toResumeInfo(row) {
-      this.$router.push({
-        path: '/resume/resumeInfo',
-        query: {
-          applicationID: row.applicationID,
-          companyID: row.companyID,
-          resumeID: row.resumeID,
-          positionID: row.positionID
-        }
-      })
+      window.open(`${window.location.origin}/#/resumeInfo?applicationID=${row.applicationID}`, '_black')
+      // this.$router.push({
+      //   path: '/resumeInfo',
+      //   query: {
+      //     applicationID: row.applicationID,
+      //   }
+      // })
     },
 
     // 下载简历
-    uploadResume() {
+    async uploadResume(row) {
+      try {
+        const fileName = row.applicationID + '.pdf';
+        const {data, code, message} = await this.$http.get('/getFile/getFileUrl', {
+          params: {
+            applicationKey: fileName
+          }
+        })
+        if (code !== 200) {
+          this.$message.warning('获取下载地址错误');
+          return
+        }
 
-    }
+        // 替换为你的OSS文件URL
+        const pdfUrl = data.url;
+        // 使用axios获取文件的响应体
+        const response = await axios.get(pdfUrl, {responseType: 'blob'});
+
+        // 创建Blob对象
+        const blob = new Blob([response.data], {type: 'application/pdf'});
+
+        // 创建隐藏的可下载链接
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `${row.applicationKey}.pdf`; // 自定义文件名
+        document.body.appendChild(link);
+
+        // 触发点击
+        link.click();
+
+        // 清理URL和link元素
+        URL.revokeObjectURL(link.href);
+        link.remove();
+      } catch (error) {
+        console.error('下载PDF文件时发生错误:', error);
+      }
+    },
   }
 }
 </script>

@@ -49,8 +49,12 @@ export const API = {
 
 
 
-
   //新增简历
+  getP(data) {
+    return request(`/getFile/getP`, 'POST', data)
+  },
+
+//新增简历
   addApplication(data) {
     return request(`/jobApplication/addApplication`, 'POST', data)
   },

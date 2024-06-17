@@ -738,7 +738,9 @@ export class JobApplicationController {
             application.applicationID = OperateData.createId('applicationID');
 
             await this.jobApplicationServer.addApplication(application)
-            res.send(sendData.getOkSendData(null, '投递成功'));
+            res.send(sendData.getOkSendData({
+                applicationID: application.applicationID
+            }, '投递成功'));
         } catch (e) {
             if(e.message === '请完善您的建立') {
                 res.send(sendData.getNoSendData(e.message, 301))

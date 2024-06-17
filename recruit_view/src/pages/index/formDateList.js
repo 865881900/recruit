@@ -10,12 +10,14 @@ export default [
   {
     'title': '姓名',
     'key': 'name',
-    'type': 'input'
+    'type': 'input',
+    'maxlength': '10'
   },
   {
     'title': '身份证号',
     'key': 'iDNumber',
-    'type': 'input'
+    'type': 'input',
+    'maxlength': '18'
   },
   {
     'title': '性别',
@@ -40,22 +42,26 @@ export default [
   {
     'title': '邮箱',
     'key': 'email',
-    'type': 'input'
+    'type': 'input',
+    'maxlength': '20'
   },
   {
     'title': '手机号',
     'key': 'phoneNumber',
-    'type': 'input'
+    'type': 'input',
+    'maxlength': '11'
   },
   {
     'title': '微信号',
     'key': 'weChat',
-    'type': 'input'
+    'type': 'input',
+    'maxlength': '20'
   },
   {
     'title': '民族',
     'key': 'ethnicity',
     'type': 'input',
+    'maxlength': '10'
   },
   {
     'title': '政治面貌',
@@ -71,7 +77,8 @@ export default [
   {
     'title': '个人社交主页',
     'key': 'socialProfile',
-    'type': 'input'
+    'type': 'input',
+    'maxlength': '20'
   },
   {
     'title': '求职身份',
@@ -81,7 +88,8 @@ export default [
   {
     'title': '个人说明',
     'key': 'personalStatement',
-    'type': 'textarea'
+    'type': 'textarea',
+    'maxlength': '100'
   },
 ]
 // "ExperienceID": "EXPERIENCEID51feaa10x262ex11efxaa4bx8d95e57dbb73",
@@ -98,22 +106,25 @@ export const resumeWork = [
   {
     'title': '企业名称',
     'key': 'companyName',
-    'type': 'input'
+    'type': 'input',
+    'maxlength': '20'
   },
   {
     'title': '工作类型',
     'key': 'jobType',
     'type': 'input',
+    'maxlength': '10'
   },
   {
     'title': '岗位',
     'key': 'positionTitle',
     'type': 'input',
+    'maxlength': '10'
   },
   {
-    'title': '省份',
+    'title': '城市',
     'key': 'city',
-    'type': 'picker',
+    'type': 'region',
   },
   {
     'title': '入职日期',
@@ -129,6 +140,7 @@ export const resumeWork = [
     'title': '工作内容',
     'key': 'jobDescription',
     'type': 'textarea',
+    'maxlength': '100'
   },
 ]
 
@@ -146,12 +158,14 @@ export const resumeEducation = [
   {
     'title': '学校名称',
     'key': 'schoolName',
-    'type': 'input'
+    'type': 'input',
+    'maxlength': '10'
   },
   {
     'title': '专业',
     'key': 'major',
     'type': 'input',
+    'maxlength': '10'
   },
   {
     'title': '学历',
@@ -159,9 +173,9 @@ export const resumeEducation = [
     'type': 'picker',
   },
   {
-    'title': '省份',
+    'title': '城市',
     'key': 'city',
-    'type': 'picker',
+    'type': 'region',
   },
   {
     'title': '入学日期',
@@ -177,5 +191,6 @@ export const resumeEducation = [
     'title': '教育描述',
     'key': 'educationDescription',
     'type': 'textarea',
+    'maxlength': '100'
   },
 ]

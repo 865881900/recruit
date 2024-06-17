@@ -16,7 +16,21 @@
       <view class="form-item-content">
         <picker
           :placeholder="'请选择' + formItem.title"
-          v-if="formItem.type === 'picker'"
+          v-if="formItem.type === 'region'"
+          mode="multiSelector"
+          range-key="value"
+          :value="basicInfo[formItem.key]"
+          @change="(e) => change(e, formItem.key, formItem.options)"
+          @columnchange="bindcolumnchange"
+          :range="provinceCity"
+        >
+          <view class="picker">
+            {{ basicInfo[formItem.key] }}
+          </view>
+        </picker>
+        <picker
+          :placeholder="'请选择' + formItem.title"
+          v-else-if="formItem.type === 'picker'"
           @change="(e) => change(e, formItem.key, formItem.options)"
           range-key="value"
           :value="basicInfo[formItem.key]"
@@ -105,7 +119,7 @@ export default {
   name: 'resumeWork',
   data() {
     return {
-      index: 0,
+      provinceCity: [],
       formDateList: [],
       basicInfo: {
         "JobType": "", // 工作类型
@@ -128,8 +142,35 @@ export default {
     this.initFormDateList()
   },
   methods: {
+    bindcolumnchange(e) {
+      const {column, value} = e.detail;
+      if (column === 0) {
+        this.provinceCity[1] = this.RegionEnum[value].childern.map(item => {
+          return {
+            key: item.adcode,
+            value: item.title,
+          }
+        })
+      }
+    },
+
+
     async initFormDateList() {
       let {code, data, message} = await API.getEnumMap();
+      this.RegionEnum = data.RegionEnum;
+      this.provinceCity[0] = data.RegionEnum.map((item, index) => {
+        return {
+          key: item.adcode,
+          value: item.title,
+          index: index
+        }
+      })
+      this.provinceCity[1] = this.RegionEnum[0].childern.map(item => {
+        return {
+          key: item.adcode,
+          value: item.title,
+        }
+      })
       this.formDateList = resumeWork.map(item => {
         if (item.key === 'city') {
           item.options = data.RegionEnum.map(item => {
@@ -173,8 +214,17 @@ export default {
 
     change(e, key, options) {
       const index = e.detail.value;
-      this.basicInfo[key] = options[index].key;
+      if (key === 'city') {
+        if (index.length === 1) {
+          this.basicInfo[key] = this.provinceCity[0][e.detail.value[0]].value
+        } else {
+          this.basicInfo[key] = this.provinceCity[1][e.detail.value[1]].value
+        }
+      } else {
+        this.basicInfo[key] = options[index].key;
+      }
     },
+
     getValue({options, key, title}) {
       const item = options.find(item => item.key === this.basicInfo[key]);
       return item ? item.value : '请选择' + title
@@ -200,7 +250,7 @@ export default {
       if (!experienceID) {
         return
       }
-      await API.getWorkExperienceByExperienceID({
+      const {data} = await API.getWorkExperienceByExperienceID({
         experienceID: experienceID
       });
       this.basicInfo = {

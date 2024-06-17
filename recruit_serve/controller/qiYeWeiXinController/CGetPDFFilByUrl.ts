@@ -17,6 +17,7 @@ class CGetPDFFilByUrl {
     oss: OSSController
     browser: GoogleBrowserServer
     private jobApplicationServer: JobApplicationServer
+
     constructor() {
         this.jobApplicationServer = getJobApplicationServer()
         this.oss = getOSSController();
@@ -29,18 +30,17 @@ class CGetPDFFilByUrl {
         try {
             let that: CGetPDFFilByUrl = this;
             const applicationID: string = req.body.applicationID;
-            const fileName: string = req.body.fileName;
             let time = new Date().getTime() + '';
             const pdfBuffer: Buffer = await that.browser.getPagePdfOrBuffer(`http://localhost:9528/#/resumeInfo?applicationID=${applicationID}&time=${time}`, time)
             // pdfBuffer = await that.browser.getPagePdfOrBuffer(`http://test.qxlyun.com/#/${navString}?ids=${fileId}&time=${time}&type=pdf`, time)
             // pdfBuffer = await that.browser.getPagePdfOrBuffer(`http://localhost:8089/#/${navString}?ids=${fileId}&time=${time}`,time)
             // const pdfBuffer: Buffer = await that.browser.getPagePdfOrBuffer(`http://qxlyun.com/jsqxpc/#/${navString}?ids=${fileId}&time=${time}&type=pdf`,time)
             const readable: Readable = Readable.from(pdfBuffer);
-            let {code}: RequestData = await that.oss.upLoadingOss(fileName, readable);
+            let {code}: RequestData = await that.oss.upLoadingOss(`${applicationID}.pdf`, readable);
             if (code == 200) {
-                await  this.jobApplicationServer.setCreatePdf(applicationID)
+                await this.jobApplicationServer.setCreatePdf(applicationID)
                 res.send(sendData.getOkSendData({
-                    filePath: fileName
+                    filePath: `${applicationID}.pdf`
                 }))
             } else {
                 res.send(sendData.getNoSendData('存储错误'));
@@ -50,6 +50,24 @@ class CGetPDFFilByUrl {
         }
     }
 
+
+    async getFileUrl(req, res) {
+        const sendData = new SendData();
+        try {
+            let that: CGetPDFFilByUrl = this;
+            const applicationKey: string = req.query.applicationKey;
+            let url = await that.oss.uploadFile(applicationKey);
+            if (url) {
+                res.send(sendData.getOkSendData({
+                    url: url
+                }))
+            } else {
+                res.send(sendData.getNoSendData('返回错误'));
+            }
+        } catch (e) {
+            res.send(sendData.getNoSendData(e.message));
+        }
+    }
 
     /**
      * 生成oss资源储存的路径

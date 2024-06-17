@@ -146,7 +146,7 @@ export default {
             const { companyLogo } = scope.row
             return h('img', {
               attrs: {
-                src: companyLogo
+                src: process.env.VUE_APP_BASE_API + companyLogo
               },
               style: {
                 width: '20px',
@@ -346,7 +346,7 @@ export default {
       }
     },
     handleAvatarSuccess(res, file) {
-      this.companyFromData.companyLogo = `${process.env.VUE_APP_BASE_API}/jobApplication/download?filename=${res.data.path}`
+      this.companyFromData.companyLogo = `/jobApplication/download?filename=${res.data.path}`
     },
     beforeAvatarUpload(file) {
       const isJPG = ['image/png', 'image/jpeg'].includes(file.type)

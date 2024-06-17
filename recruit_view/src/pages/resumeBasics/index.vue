@@ -46,14 +46,14 @@
           v-model="basicInfo[formItem.key]"
           class="uni-input"
           :placeholder="'请输入' + formItem.title"
-          maxlength="100"
+          :maxlength="formItem.maxlength"
         />
         <textarea
           v-else-if="formItem.type === 'textarea'"
           v-model="basicInfo[formItem.key]"
           class="uni-input"
           :placeholder="'请输入' + formItem.title"
-          maxlength="1000"
+          :maxlength="formItem.maxlength"
         />
 
         <picker

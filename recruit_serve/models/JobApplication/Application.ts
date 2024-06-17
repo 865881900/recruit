@@ -15,6 +15,8 @@ import { IsInt, IsDateString } from 'class-validator';
  * 申请实体类
  */
 export class Application {
+
+    createPdf: string
     /**
      * 申请ID，自增主键
      */

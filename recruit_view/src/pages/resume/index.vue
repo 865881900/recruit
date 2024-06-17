@@ -181,7 +181,7 @@ export default {
         return
       }
       uni.navigateTo({
-        url: `/${path}?resumeID=${resumeID}${id ? `&id=${id}` : ''}`,
+        url: `/${path}?resumeID=${resumeID}${id ? `&id=${id}` : ''}`,x
       })
     },
 
@@ -197,15 +197,9 @@ export default {
         return {
           ..._data,
           degree: getLabelByEquals(this.enumMap.EducationRequirementEnum, item => item.key === _data.degree) || '',
-          city: getLabelByEquals(this.enumMap.RegionEnum, item => item.adcode === _data.city) || ''
         }
       });
-      this.workExperienceList = data.workExperienceList.map(_data => {
-        return {
-          ..._data,
-          city: getLabelByEquals(this.enumMap.RegionEnum, item => item.adcode === _data.city) || ''
-        }
-      });
+      this.workExperienceList = data.workExperienceList;
       this.basicInfo = {
         ...data,
         gender: data.gender === '1' ? '男' : '女',

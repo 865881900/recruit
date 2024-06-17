@@ -1,6 +1,7 @@
 <template>
   <view class="curriculum">
     <view class="title-h5 card_title">教育信息</view>
+
     <view
       v-for="(formItem, index) in formDateList"
       :key="index"
@@ -16,7 +17,22 @@
       <view class="form-item-content">
         <picker
           :placeholder="'请选择' + formItem.title"
-          v-if="formItem.type === 'picker'"
+          v-if="formItem.type === 'region'"
+          mode="multiSelector"
+          range-key="value"
+          :value="basicInfo[formItem.key]"
+          @change="(e) => change(e, formItem.key, formItem.options)"
+          @columnchange="bindcolumnchange"
+          :range="provinceCity"
+        >
+          <view class="picker">
+            {{ basicInfo[formItem.key] }}
+          </view>
+        </picker>
+
+        <picker
+          :placeholder="'请选择' + formItem.title"
+          v-else-if="formItem.type === 'picker'"
           @change="(e) => change(e, formItem.key, formItem.options)"
           range-key="value"
           :value="basicInfo[formItem.key]"
@@ -105,8 +121,8 @@ export default {
   name: 'resumeEducation',
   data() {
     return {
-      index: 0,
       formDateList: [],
+      provinceCity: [],
       basicInfo: {
         "schoolName": "", // 学校名称
         "major": "",// 专业
@@ -126,20 +142,40 @@ export default {
     }
     this.getResumeData(this.basicInfo.educationID)
     this.initFormDateList()
+
   },
   methods: {
+    bindcolumnchange(e) {
+      const {column, value} = e.detail;
+      if (column === 0) {
+        this.provinceCity[1] = this.RegionEnum[value].childern.map(item => {
+          return {
+            key: item.adcode,
+            value: item.title,
+          }
+        })
+      }
+    },
+
     async initFormDateList() {
       let {code, data, message} = await API.getEnumMap();
+      this.RegionEnum = data.RegionEnum;
+      this.provinceCity[0] = data.RegionEnum.map((item, index) => {
+        return {
+          key: item.adcode,
+          value: item.title,
+          index: index
+        }
+      })
+      this.provinceCity[1] = this.RegionEnum[0].childern.map(item => {
+        return {
+          key: item.adcode,
+          value: item.title,
+        }
+      })
       this.formDateList = resumeEducation.map(item => {
         if (item.key === 'degree') {
           item.options = data.EducationRequirementEnum
-        } else if (item.key === 'city') {
-          item.options = data.RegionEnum.map(item => {
-            return {
-              key: item.adcode,
-              value: item.title,
-            }
-          })
         }
         return item;
       })
@@ -175,7 +211,15 @@ export default {
 
     change(e, key, options) {
       const index = e.detail.value;
-      this.basicInfo[key] = options[index].key;
+      if (key === 'city') {
+        if (index.length === 1) {
+          this.basicInfo[key] = this.provinceCity[0][e.detail.value[0]].value
+        } else {
+          this.basicInfo[key] = this.provinceCity[1][e.detail.value[1]].value
+        }
+      } else {
+        this.basicInfo[key] = options[index].key;
+      }
     },
     getValue({options, key, title}) {
       const item = options.find(item => item.key === this.basicInfo[key]);
@@ -206,7 +250,7 @@ export default {
       this.basicInfo = {
         ...data,
         startDate: genDate(data.startDate),
-        endDate: genDate(data.endDate),
+        endDate: genDate(data.endDate)
       };
     },
     deleteFunShowModal() {

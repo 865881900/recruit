@@ -192,7 +192,9 @@ export default {
   },
   mounted() {
     document.body.style.width = document.documentElement.style.width = '1080px';
-
+  },
+  destroyed() {
+    document.body.style.width = document.documentElement.style.width = '';
   },
   methods: {
     imgLoad() {

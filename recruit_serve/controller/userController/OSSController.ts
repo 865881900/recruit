@@ -2,6 +2,7 @@ import {MpUploadOssHelper} from "../../models/MpUploadOssHelper";
 import {ACCESSKEYID, ACCESSKEYSECRET, DIR, HOST, OSSConfig} from "../../config/default";
 import * as OSS from "ali-oss";
 import {OperateData} from "../../utils/OperateData";
+
 export class OSSController {
     private oss: OSS;
 
@@ -58,16 +59,22 @@ export class OSSController {
     }
 
 
-    public async upLoadingOss(name: string, buffer){
+    public async upLoadingOss(name: string, buffer) {
         // const result = await this.oss.listBuckets(null);
         // console.log(result);
-        let {res: {status}}: any = await this.oss.putStream(`${name}`, buffer);
+        let {res: {status}}: any = await this.oss.putStream(`${DIR}${name}`, buffer);
         if (status != 200) {
             throw 'oss上传失败'
         }
         return {
             code: 200
         }
+    }
+
+    async uploadFile(name: string): Promise<string> {
+        return this.oss.signatureUrl(`${DIR}${name}`, {
+            expires: 3600
+        });
     }
 
 

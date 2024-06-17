@@ -333,7 +333,7 @@ export class JobApplicationServer {
                 throw new Error('通过companyID没有查询到公司详情')
             }
             // 检查岗位
-            const _position = await this.positionDAO.getPositionByPositionID(positionID)
+            const _position = await this.positionDAO.getPositionByPositionID(positionID);
             if (!_position) {
                 throw new Error('通过positionID没有查询到岗位信息')
             }

@@ -213,7 +213,7 @@ export default {
         }, 600)
         return
       }
-      const {code} = await API.addApplication({
+      const {data, code} = await API.addApplication({
         companyID: this.companyID,
         positionID: id,
         resumeID: userinfo.resumeID,
@@ -227,6 +227,9 @@ export default {
           clearTimeout(ID)
         }, 600)
       } else {
+        API.getP({
+          applicationID: data.applicationID,
+        });
         this.getCompaniesByCompanyID();
         modelT('投递成功');
       }

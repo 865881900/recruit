@@ -14,17 +14,22 @@ export let url = process.env.NODE_ENV == 'development' ? 'http://localhost' : ''
 //端口
 export let port = parseInt(process.env.PORT, 10) || 8088
 //oss配置
-export const ACCESSKEYSECRET = 'FlU6A7i2CspXz8MlN13zT7hOgLo8Tj';
-export const ACCESSKEYID = 'LTAI5tD3dtgMy2oyVKr4eFYi';
+// export const ACCESSKEYSECRET = 'FlU6A7i2CspXz8MlN13zT7hOgLo8Tj';
+// export const ACCESSKEYID = 'LTAI5tD3dtgMy2oyVKr4eFYi';
+
+
+
+export const ACCESSKEYSECRET = 'QZ9QqQlSrCarADilGhfCW9Sz9OTnsY';
+export const ACCESSKEYID = 'LTAI5tN2AtjkSkyCG9cUEdJM';
 export const HOST = 'https://oss-cn-beijing.aliyuncs.com'; // 外网
 // export const HOST = 'https://qxlreportpdf.oss-cn-beijing-internal.aliyuncs.com'; //内网
 
 // oss://wcpdemo/resumeInfo/
 
-export const DIR = 'resumeInfo/';
+export const DIR = '/resumeInfo/';
 export const OSSConfig = {
     internal: false,
-    bucket: 'wcpdemo',
+    bucket: 'autophone',
     region: 'oss-cn-beijing',
     accessKeyId: ACCESSKEYID,
     accessKeySecret: ACCESSKEYSECRET,
