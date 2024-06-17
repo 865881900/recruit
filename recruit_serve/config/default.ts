@@ -44,7 +44,7 @@ export const poolConfig: PoolConfig = {
     queueLimit: 0,//链接栈里面的最大的数量,超出后直接返回错误
     host: 'localhost',
     user: 'root',
-    password: 'root_password', //密码
+    password: 'mysql_CHENyinan0319', //密码
     database: 'JobApplicationDB', //数据库名
     port: 3306,        //数据库端口
 };
