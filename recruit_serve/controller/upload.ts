@@ -49,6 +49,7 @@ export class Upload {
             const filename = req.query.filename;
             // 构建完整的文件路径
             const filePath = path.join(__dirname, '..', filename);
+            console.log(filePath);
             // 使用fs.readFile异步读取文件
             fs.readFile(filePath, (err, data) => {
                 if (err) {
