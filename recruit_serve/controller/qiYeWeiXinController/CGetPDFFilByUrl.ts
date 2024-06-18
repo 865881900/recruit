@@ -31,7 +31,7 @@ class CGetPDFFilByUrl {
             let that: CGetPDFFilByUrl = this;
             const applicationID: string = req.body.applicationID;
             let time = new Date().getTime() + '';
-            const pdfBuffer: Buffer = await that.browser.getPagePdfOrBuffer(`http://localhost/pc/#/resumeInfo?applicationID=${applicationID}&time=${time}`, time)
+            const pdfBuffer: Buffer = await that.browser.getPagePdfOrBuffer(`http://47.94.164.229/pc/#/resumeInfo?applicationID=${applicationID}&time=${time}`, time)
             // pdfBuffer = await that.browser.getPagePdfOrBuffer(`http://test.qxlyun.com/#/${navString}?ids=${fileId}&time=${time}&type=pdf`, time)
             // pdfBuffer = await that.browser.getPagePdfOrBuffer(`http://localhost:8089/#/${navString}?ids=${fileId}&time=${time}`,time)
             // const pdfBuffer: Buffer = await that.browser.getPagePdfOrBuffer(`http://qxlyun.com/jsqxpc/#/${navString}?ids=${fileId}&time=${time}&type=pdf`,time)
