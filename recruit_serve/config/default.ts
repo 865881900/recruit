@@ -30,7 +30,7 @@ export const DIR = '/resumeInfo/';
 export const OSSConfig = {
     internal: false,
     bucket: 'autophone',
-    region: 'oss-cn-beijing',
+    region: 'oss-cn-shanghai',
     accessKeyId: ACCESSKEYID,
     accessKeySecret: ACCESSKEYSECRET,
     timeout: '120s', // 将超时时间设置为120秒
@@ -42,7 +42,7 @@ export const poolConfig: PoolConfig = {
     waitForConnections: true,// 当连接池的每个链接到达上线的时候,为true,则加入队列,等到有可用链接,在进行查询.为fasle的时候, 链接池直接抛出异常
     connectionLimit: 10, //最大的链接上线
     queueLimit: 0,//链接栈里面的最大的数量,超出后直接返回错误
-    host: 'localhost',
+    host: '127.0.0.1',
     user: 'root',
     password: 'mysql_CHENyinan0319', //密码
     database: 'JobApplicationDB', //数据库名

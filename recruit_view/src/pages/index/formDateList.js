@@ -125,6 +125,7 @@ export const resumeWork = [
     'title': '城市',
     'key': 'city',
     'type': 'region',
+
   },
   {
     'title': '入职日期',

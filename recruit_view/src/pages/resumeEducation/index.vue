@@ -26,7 +26,7 @@
           :range="provinceCity"
         >
           <view class="picker">
-            {{ basicInfo[formItem.key] }}
+            {{ basicInfo[formItem.key] || '请选择'}}
           </view>
         </picker>
 
@@ -88,7 +88,7 @@
       <image
         v-if="['date', 'picker'].includes(formItem.type)"
         class="form-item-select-img"
-        src="/static/icon/right.png"
+        src="../../static/icon/right.png"
       />
 
     </view>
@@ -227,6 +227,7 @@ export default {
     },
 
     async submit() {
+      console.log(1);
       if (!isOnclicks()) {
         return
       }

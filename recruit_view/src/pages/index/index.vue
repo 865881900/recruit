@@ -10,14 +10,14 @@
           </view>
           <view class="company-type">
             <view class="company-view">
-              <image class="company-type-icon" src="/static/icon/typeEmployee.png"></image>
+              <image class="company-type-icon" src="../../static/icon/typeEmployee.png"></image>
               <view>
                 类型：
                 <view class="aaa">{{ companyType }}</view>
               </view>
             </view>
             <view class="company-view">
-              <image class="company-type-icon" src="/static/icon/numberEmployee.png"></image>
+              <image class="company-type-icon" src="../../static/icon/numberEmployee.png"></image>
               <view>规模：
                 <view class="aaa">{{ company.companySize }}</view>
               </view>
@@ -26,10 +26,11 @@
         </view>
         <image
           v-if="false"
-          class="company-info" src="/static/icon/right.png"/>
+          class="company-info" src="../../static/icon/right.png"/>
       </view>
+
       <view class="company-address">
-        <image class="company-type-icon" src="/static/icon/address.png"></image>
+        <image class="company-type-icon" src="../../static/icon/address.png"></image>
         <view>企业地址：{{ company.companyAddress }}</view>
       </view>
     </view>

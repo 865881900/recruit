@@ -20,7 +20,7 @@
           type="primary"
           @click="handleClose(true)"
         >
-          <span class="glz_newAdd glz_newAdd_lR" />新增企业
+          <span class="glz_newAdd glz_newAdd_lR"/>新增企业
         </el-button>
         <el-form inline class="form-inline" @submit.native.prevent>
           <el-form-item label="企业类型：">
@@ -54,26 +54,26 @@
         :rules="companyFromRules"
       >
         <el-form-item label="企业名称：" prop="companyName">
-          <el-input v-model="companyFromData.companyName" maxlength="100" />
+          <el-input v-model="companyFromData.companyName" maxlength="100"/>
         </el-form-item>
         <el-form-item label="企业logo：" prop="companyLogo">
           <el-upload
             class="avatar-uploader"
-            action="/jobApplication/jobApplication/uploads"
+            :action="uploads"
             :show-file-list="false"
             :multiple="false"
             :on-success="handleAvatarSuccess"
             :before-upload="beforeAvatarUpload"
           >
             <img v-if="companyFromData.companyLogo" :src="companyFromData.companyLogo" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon" />
+            <i v-else class="el-icon-plus avatar-uploader-icon"/>
           </el-upload>
         </el-form-item>
         <el-form-item label="企业地址：" prop="companyAddress">
-          <el-input v-model="companyFromData.companyAddress" maxlength="200" />
+          <el-input v-model="companyFromData.companyAddress" maxlength="200"/>
         </el-form-item>
         <el-form-item label="企业规模：" prop="companySize">
-          <el-input v-model="companyFromData.companySize" maxlength="100" />
+          <el-input v-model="companyFromData.companySize" maxlength="100"/>
         </el-form-item>
         <el-form-item label="企业类型：" prop="companyType">
           <el-select
@@ -91,7 +91,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="企业介绍：" prop="companyIntroduction">
-          <el-input v-model="companyFromData.companyIntroduction" type="textarea" maxlength="1000" show-word-limit />
+          <el-input v-model="companyFromData.companyIntroduction" type="textarea" maxlength="1000" show-word-limit/>
         </el-form-item>
       </el-form>
 
@@ -105,7 +105,7 @@
 
 <script>
 import GTable from '../../components/table/index'
-import { getLabelByEquals } from '@/utils'
+import {getLabelByEquals} from '@/utils'
 import moment from 'moment'
 
 export default {
@@ -130,7 +130,7 @@ export default {
           'show-overflow-tooltip': true,
           label: '企业类型',
           render(h, scope, column) {
-            const { companyType } = scope.row
+            const {companyType} = scope.row
             return h(
               'span',
               getLabelByEquals(that.optionMap.CompanyTypeEnum, (item) => item.key === companyType)
@@ -143,7 +143,7 @@ export default {
           'show-overflow-tooltip': true,
           label: '企业logo',
           render(h, scope, column) {
-            const { companyLogo } = scope.row
+            const {companyLogo} = scope.row
             return h('img', {
               attrs: {
                 src: process.env.VUE_APP_BASE_API + companyLogo
@@ -169,7 +169,7 @@ export default {
           prop: '',
           'show-overflow-tooltip': true,
           label: '企业招聘岗位',
-          formatter({ row }) {
+          formatter({row}) {
             return row.positionList.length || '0'
           }
         },
@@ -177,7 +177,7 @@ export default {
           prop: 'createDate',
           'show-overflow-tooltip': true,
           label: '创建时间',
-          formatter({ row }) {
+          formatter({row}) {
             return moment(row.createDate).format('yyyy-MM-DD HH:mm:SS')
           }
         },
@@ -245,12 +245,12 @@ export default {
         companyType: '' // 企业类型
       },
       companyFromRules: {
-        companyName: { required: true, message: '请输入企业名称', trigger: 'blur' },
-        companyLogo: { required: true, message: '请上传企业logo', trigger: 'blur' },
-        companyAddress: { required: true, message: '请输入企业地址', trigger: 'blur' },
-        companySize: { required: true, message: '请输入企业规模', trigger: 'blur' },
-        companyType: { required: true, message: '请选择企业类型', trigger: ['blur', 'change'] },
-        companyIntroduction: { required: true, message: '请输入企业介绍', trigger: 'blur' }
+        companyName: {required: true, message: '请输入企业名称', trigger: 'blur'},
+        companyLogo: {required: true, message: '请上传企业logo', trigger: 'blur'},
+        companyAddress: {required: true, message: '请输入企业地址', trigger: 'blur'},
+        companySize: {required: true, message: '请输入企业规模', trigger: 'blur'},
+        companyType: {required: true, message: '请选择企业类型', trigger: ['blur', 'change']},
+        companyIntroduction: {required: true, message: '请输入企业介绍', trigger: 'blur'}
       }
     }
   },
@@ -258,6 +258,10 @@ export default {
   computed: {
     optionMap() {
       return this.$store.state.settings.optionMap
+    },
+
+    uploads() {
+      return process.env.VUE_APP_BASE_API + '/jobApplication/uploads'
     }
   },
   watch: {
@@ -274,9 +278,9 @@ export default {
     async getList() {
       try {
         this.tableLoading = true
-        const { searchName: companyName, pageSize, page: pageNumber } = this.pageBean
-        const { companyType } = this.fromData
-        const { data, code, message } = await this.$http.post('/jobApplication/getCompanyList', {
+        const {searchName: companyName, pageSize, page: pageNumber} = this.pageBean
+        const {companyType} = this.fromData
+        const {data, code, message} = await this.$http.post('/jobApplication/getCompanyList', {
           companyType,
           companyName,
           pageSize,
@@ -321,7 +325,11 @@ export default {
     },
     update(row) {
       this.handleClose(true)
-      this.companyFromData = row
+      this.companyFromData = {
+        ...row,
+        companyLogo: process.env.VUE_APP_BASE_API + row.companyLogo
+
+      }
     },
     // 提交
     async confirm() {
@@ -329,8 +337,9 @@ export default {
         this.loadingAddCompany = true
         await this.$refs.form.validate()
         const url = `${this.companyFromData.companyID ? '/jobApplication/updateCompany' : '/jobApplication/addCompany'}`
-        const { code, message } = await this.$http.post(url, {
-          ...this.companyFromData
+        const {code, message} = await this.$http.post(url, {
+          ...this.companyFromData,
+          companyLogo: this.companyFromData.companyLogo.replace(process.env.VUE_APP_BASE_API, '')
         })
         if (code === 200) {
           this.handleClose(false)
@@ -346,7 +355,7 @@ export default {
       }
     },
     handleAvatarSuccess(res, file) {
-      this.companyFromData.companyLogo = `/jobApplication/download?filename=${res.data.path}`
+      this.companyFromData.companyLogo = `${process.env.VUE_APP_BASE_API}/jobApplication/download?filename=${res.data.path}`
     },
     beforeAvatarUpload(file) {
       const isJPG = ['image/png', 'image/jpeg'].includes(file.type)

@@ -25,7 +25,7 @@
           :range="provinceCity"
         >
           <view class="picker">
-            {{ basicInfo[formItem.key] }}
+            {{ basicInfo[formItem.key]  || '请选择'}}
           </view>
         </picker>
         <picker
@@ -86,9 +86,8 @@
       <image
         v-if="['date', 'picker'].includes(formItem.type)"
         class="form-item-select-img"
-        src="/static/icon/right.png"
+        src="../../static/icon/right.png"
       />
-
     </view>
 
     <view
@@ -122,13 +121,13 @@ export default {
       provinceCity: [],
       formDateList: [],
       basicInfo: {
-        "JobType": "", // 工作类型
-        "CompanyName": "",// 企业名称
-        "PositionTitle": "",// 岗位
-        "City": "",// 城市
-        "StartDate": "",//
-        "EndDate": "",//
-        "JobDescription": "",// 工作内容
+        "jobType": "", // 工作类型
+        "companyName": "",// 企业名称
+        "positionTitle": "",// 岗位
+        "city": "",// 城市
+        "startDate": "",//
+        "endDate": "",//
+        "jobDescription": "",// 工作内容
       }
     }
   },
@@ -213,11 +212,15 @@ export default {
     },
 
     change(e, key, options) {
+
       const index = e.detail.value;
       if (key === 'city') {
+        console.log(index.length);
         if (index.length === 1) {
+
           this.basicInfo[key] = this.provinceCity[0][e.detail.value[0]].value
         } else {
+          console.log('provinceCity',this.provinceCity[1][e.detail.value[1]].value);
           this.basicInfo[key] = this.provinceCity[1][e.detail.value[1]].value
         }
       } else {

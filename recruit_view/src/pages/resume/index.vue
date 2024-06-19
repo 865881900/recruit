@@ -153,7 +153,7 @@ export default {
       enumMap: {}
     }
   },
-  async onLoad() {
+  async onShow() {
     await this.getEnumMap();
     const userinfo = uni.getStorageSync('userinfo');
     if (userinfo) {
@@ -163,12 +163,6 @@ export default {
       }
     }
   },
-  onShow() {
-    if (this.userinfo && this.userinfo.resumeID) {
-      this.getResumeData(this.userinfo.resumeID)
-    }
-  },
-
   methods: {
     async getEnumMap() {
       let {code, data, message} = await API.getEnumMap();
@@ -181,7 +175,7 @@ export default {
         return
       }
       uni.navigateTo({
-        url: `/${path}?resumeID=${resumeID}${id ? `&id=${id}` : ''}`,x
+        url: `/${path}?resumeID=${resumeID}${id ? `&id=${id}` : ''}`,
       })
     },
 

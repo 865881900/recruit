@@ -72,7 +72,7 @@
       <image
         v-if="['date', 'picker'].includes(formItem.type)"
         class="form-item-select-img"
-        src="/static/icon/right.png"
+        src="../../static/icon/right.png"
       />
     </view>
 
@@ -117,13 +117,15 @@ export default {
       }
     }
   },
-  onLoad(option) {
+  onLoad() {
     const userinfo = uni.getStorageSync('userinfo');
     if (userinfo) {
       this.userinfo = JSON.parse(userinfo)
+      console.log(1, userinfo.resumeID);
     }
-    if (option.resumeID) {
-      this.getResumeData(option.resumeID)
+    if (this.userinfo.resumeID) {
+      console.log(2, this.userinfo.resumeID);
+      this.getResumeData(this.userinfo.resumeID)
     }
 
     this.initFormDateList()
@@ -185,7 +187,10 @@ export default {
       if (!requiredCheckFun(this.basicInfo, this.formDateList)) {
         return
       }
-      let {data} = await API[this.basicInfo.resumeID ? 'updateResume' : 'createResume'](this.basicInfo);
+      let {data} = await API[this.basicInfo.resumeID ? 'updateResume' : 'createResume']({
+        ...this.basicInfo,
+        avatar: this.basicInfo.avatar.replace(HTTPURL, ''),
+      });
       if (this.basicInfo.resumeID) {
         modelT('修改成功')
         const ID = setTimeout(() => {
@@ -214,6 +219,7 @@ export default {
       });
       this.basicInfo = {
         ...data,
+        avatar: HTTPURL + data.avatar,
         earliestStartDate: genDate(data.earliestStartDate),
         birthday: genDate(data.birthday),
       };

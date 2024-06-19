@@ -1,4 +1,4 @@
-export const HTTPURL = '/HTTPURL'
+export const HTTPURL = '/api'
 // export const HTTPURL = 'https://request.dcloud.net.cn/api/http/method/';
 
 export const OSSHTTPURL = 'https://luzhioss.oss-cn-beijing.aliyuncs.com/';

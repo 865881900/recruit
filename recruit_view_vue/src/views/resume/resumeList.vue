@@ -1,6 +1,6 @@
 <template>
   <g-table
-    type="selection"
+
     v-model="pageBean"
     @selectionChange="selectionChange"
     rowKey="applicationID"
@@ -14,8 +14,12 @@
     :data="tableData"
     class="hasAlertTable"
     @change="getList"
-    @search-icon-click="getList"
+
   >
+<!--
+    type="selection"
+    @search-icon-click="getList"
+-->
     <div slot="header">
       <div>
         <el-form inline class="form-inline" @submit.native.prevent>
@@ -378,7 +382,7 @@ export default {
 
     // 查看详情
     toResumeInfo(row) {
-      window.open(`${window.location.origin}/#/resumeInfo?applicationID=${row.applicationID}`, '_black')
+      window.open(`${window.location.origin}${window.location.pathname}/#/resumeInfo?applicationID=${row.applicationID}`, '_black')
       // this.$router.push({
       //   path: '/resumeInfo',
       //   query: {

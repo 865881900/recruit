@@ -23,6 +23,7 @@ export function requiredCheckFun(obj, requiredCheckList) {
         case 'picker':
         case 'image':
         case 'date':
+        case 'region':
           title = '请选择' + item.title
           break
       }
