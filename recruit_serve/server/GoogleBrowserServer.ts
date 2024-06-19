@@ -107,8 +107,8 @@ export class GoogleBrowserServer {
             await page.close();
             return pdfBuffer
         } catch (e) {
-            console.log(`生成错误,关闭页面`)
-            await page.close();
+            console.log(`生成错误,关闭页面`, e.message)
+            await page && page.close();
             throw e
         }
 
