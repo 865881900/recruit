@@ -27,6 +27,7 @@ export const HOST = 'https://oss-cn-beijing.aliyuncs.com'; // 外网
 // oss://wcpdemo/resumeInfo/
 
 export const DIR = '/resumeInfo/';
+export const DIRImg = '/resumeInfoImg/';
 export const OSSConfig = {
     internal: false,
     bucket: 'autophone',

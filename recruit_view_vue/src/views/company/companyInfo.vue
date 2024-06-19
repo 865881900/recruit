@@ -372,10 +372,7 @@ export default {
           }
         })
         if (code === 200) {
-          this.companyFromData = {
-            ...data,
-            companyLogo: process.env.VUE_APP_BASE_API + data.companyLogo
-          }
+          this.companyFromData = data;
         } else {
           this.$message.warning(message)
         }

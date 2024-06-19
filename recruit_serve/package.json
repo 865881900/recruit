@@ -39,6 +39,7 @@
     "officegen": "^0.6.4",
     "pm2": "^4.5.0",
     "puppeteer": "^5.5.0",
+    "qrcode": "^1.5.3",
     "redis": "^3.0.2",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.25",

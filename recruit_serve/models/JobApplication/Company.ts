@@ -74,6 +74,16 @@ export class Company {
 
   private updateDate: string;
 
+  private _qrcode: string;
+
+
+  get qrcode(): string {
+    return this._qrcode;
+  }
+
+  set qrcode(value: string) {
+    this._qrcode = value;
+  }
 
   get positionList(): Array<Position> {
     return this._positionList;

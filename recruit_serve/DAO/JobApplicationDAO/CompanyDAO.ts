@@ -23,6 +23,7 @@ export class CompanyDAO {
                 company.companySize,
                 company.companyIntroduction,
                 company.companyType,
+                company.qrcode,
             ])
             if (data.affectedRows !== 1) {
                 throw Error('数据库操作失败')

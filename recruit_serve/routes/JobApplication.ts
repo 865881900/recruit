@@ -37,9 +37,14 @@ router.post('/addApplication', jobApplicationController.addApplication.bind(jobA
 router.post('/getResumeList', jobApplicationController.getResumeList.bind(jobApplicationController));
 router.get('/getApplication', jobApplicationController.getApplication.bind(jobApplicationController));
 
+import * as multer from 'multer';
+// 使用multer处理文件上传
+const storage = multer.memoryStorage(); // 存储在内存中，适合小文件
+const uploads = multer({ storage });
+
 // 其他
 router.post('/getEnumMap', jobApplicationController.getEnumMap.bind(jobApplicationController));
-router.post('/uploads', upload.uploads.bind(upload));
+router.post('/uploads', uploads.single('file') ,upload.uploads.bind(upload));
 router.get('/download', upload.download.bind(upload));
 
 

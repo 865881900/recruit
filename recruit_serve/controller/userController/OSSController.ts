@@ -1,5 +1,5 @@
 import {MpUploadOssHelper} from "../../models/MpUploadOssHelper";
-import {ACCESSKEYID, ACCESSKEYSECRET, DIR, HOST, OSSConfig} from "../../config/default";
+import {ACCESSKEYID, ACCESSKEYSECRET, DIR, DIRImg, HOST, OSSConfig} from "../../config/default";
 import * as OSS from "ali-oss";
 import {OperateData} from "../../utils/OperateData";
 
@@ -53,9 +53,10 @@ export class OSSController {
      * 上传本地buff文件,冰岛返回加了令牌的地址
      *
      */
-    public async unLoadingFile(data: Buffer) {
-        let images: any = await this.oss.put(`code/${OperateData.createId('url')}.jpeg`, data);
-        return this.signatureUrl(images.name)
+    public async unLoadingFile(data: Buffer, fileName: string) {
+        let images: any = await this.oss.put(`${DIRImg}${fileName}`, data);
+        // return this.signatureUrl(images.name)
+        return images.url;
     }
 
 

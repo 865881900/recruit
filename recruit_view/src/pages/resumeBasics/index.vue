@@ -162,7 +162,7 @@ export default {
               if (data.statusCode === 200) {
                 const _data = JSON.parse(data.data);
                 if (_data.code === 200) {
-                  this.basicInfo[key] = HTTPURL + '/jobApplication/download?filename=' + _data.data.path;
+                  this.basicInfo[key] = _data.data.path;
                 }
               }
             }
@@ -219,7 +219,6 @@ export default {
       });
       this.basicInfo = {
         ...data,
-        avatar: HTTPURL + data.avatar,
         earliestStartDate: genDate(data.earliestStartDate),
         birthday: genDate(data.birthday),
       };

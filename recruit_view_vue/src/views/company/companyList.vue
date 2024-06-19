@@ -146,7 +146,7 @@ export default {
             const {companyLogo} = scope.row
             return h('img', {
               attrs: {
-                src: process.env.VUE_APP_BASE_API + companyLogo
+                src: companyLogo
               },
               style: {
                 width: '20px',
@@ -183,6 +183,7 @@ export default {
         },
         {
           prop: '',
+          width: '180px',
           'show-overflow-tooltip': true,
           label: '操作',
           render(h, scope, column) {
@@ -214,7 +215,22 @@ export default {
                   }
                 },
                 '修改'
-              )
+              ),
+              h(
+                'el-button',
+                {
+                  props: {
+                    type: 'text'
+                  },
+                  on: {
+                    click() {
+                      that.qrcode(scope.row)
+                    }
+                  }
+                },
+                '下载二维码'
+              ),
+
             ]
           }
         }
@@ -325,11 +341,7 @@ export default {
     },
     update(row) {
       this.handleClose(true)
-      this.companyFromData = {
-        ...row,
-        companyLogo: process.env.VUE_APP_BASE_API + row.companyLogo
-
-      }
+      this.companyFromData = row;
     },
     // 提交
     async confirm() {
@@ -339,7 +351,6 @@ export default {
         const url = `${this.companyFromData.companyID ? '/jobApplication/updateCompany' : '/jobApplication/addCompany'}`
         const {code, message} = await this.$http.post(url, {
           ...this.companyFromData,
-          companyLogo: this.companyFromData.companyLogo.replace(process.env.VUE_APP_BASE_API, '')
         })
         if (code === 200) {
           this.handleClose(false)
@@ -355,7 +366,7 @@ export default {
       }
     },
     handleAvatarSuccess(res, file) {
-      this.companyFromData.companyLogo = `${process.env.VUE_APP_BASE_API}/jobApplication/download?filename=${res.data.path}`
+      this.companyFromData.companyLogo = res.data.path;
     },
     beforeAvatarUpload(file) {
       const isJPG = ['image/png', 'image/jpeg'].includes(file.type)
@@ -367,7 +378,26 @@ export default {
         this.$message.error('上传头像图片大小不能超过 2MB!')
       }
       return isJPG && isLt2M
-    }
+    },
+
+    qrcode(row) {
+      this.downloadFile(row.qrcode, row.companyName + '_二维码.png' )
+    },
+
+    downloadFile(url, fileName = 'download') {
+      // 创建隐藏的a标签
+      const link = document.createElement('a');
+      link.style.display = 'none';
+      document.body.appendChild(link);
+
+      // 设置下载链接和文件名
+      link.href = url;
+      link.download = fileName;
+
+      // 触发点击事件开始下载，然后移除a标签
+      link.click();
+      document.body.removeChild(link);
+    },
   }
 }
 </script>

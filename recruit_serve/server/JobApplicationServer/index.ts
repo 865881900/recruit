@@ -9,16 +9,20 @@ import {WorkExperience} from "../../models/JobApplication/WorkExperience";
 import {EducationHistory} from "../../models/JobApplication/EducationHistory";
 import {Application} from "../../models/JobApplication/Application";
 import Verify from "../../utils/verify";
+import * as QRCode from 'qrcode'
+import {getOSSController, OSSController} from "../../controller/userController/OSSController";
 
 export class JobApplicationServer {
     private companyDAO: CompanyDAO;
     private positionDAO: PositionDAO;
     private resumeDAO: ResumeDAO;
+    oss: OSSController
 
     constructor() {
         this.companyDAO = getCompanyDAO();
         this.positionDAO = getPositionDAO();
         this.resumeDAO = getResumeDAO();
+        this.oss = getOSSController();
     }
 
     /** 企业 */
@@ -65,6 +69,10 @@ export class JobApplicationServer {
     // 新增企业
     async createCompany(company: Company): Promise<void> {
         try {
+            const qrcodeBuffer = await QRCode.toBuffer(`http://47.94.164.229/h5/#/?companyID=${company.companyID}`);
+            const fileName = `${company.companyID}_qr_code.png`;
+            const qrcode: string = await this.oss.unLoadingFile(qrcodeBuffer, fileName);
+            company.qrcode = qrcode
             await this.companyDAO.createCompany(company);
         } catch (e) {
             throw new Error(e.message)

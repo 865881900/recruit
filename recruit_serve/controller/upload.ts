@@ -3,41 +3,48 @@ import * as path from 'path';
 import * as multer from 'multer';
 import SendData from "../models/sendData"; // 需要先安装multer: npm install multer
 import * as mime from 'mime-types';
+import {getOSSController, OSSController} from "./userController/OSSController";
 
 export class Upload {
     multer: multer.Multer
+    oss: OSSController
 
     constructor() {
-        const storage = multer.diskStorage({
-            destination: function (req, file, cb) {
-                cb(null, 'uploads/'); // 指定上传文件保存的目录
-            },
-            filename: function (req, file, cb) {
-                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-                // 分离文件名和后缀
-                const ext = path.extname(file.originalname);
-                cb(null, uniqueSuffix + ext); // 生成新的文件名并保留原始后缀
-            },
-        });
-        this.multer = multer({storage: storage});
+        this.oss = getOSSController();
+        // const storage = multer.diskStorage({
+        //     //     destination: function (req, file, cb) {
+        //     //         cb(null, 'uploads/'); // 指定上传文件保存的目录
+        //     //     },
+        //     filename: function (req, file, cb) {
+        //         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        //         // 分离文件名和后缀
+        //         const ext = path.extname(file.originalname);
+        //         cb(null, uniqueSuffix + ext); // 生成新的文件名并保留原始后缀
+        //     },
+        // });
+        // this.multer = multer({storage: storage});
     }
 
 
-    uploads(req, res) {
+    async uploads(req, res) {
         const send = new SendData();
         try {
-            const uploadSingle = this.multer.single('file'); // 'file' 应与前端FormData中的key对应
-            uploadSingle(req, res, (error) => {
-                if (error) {
-                    console.error(error);
-                    return res.status(500).send('文件上传出错！');
-                }
-                // 文件上传成功，此处可以添加额外的逻辑，如保存文件信息到数据库等
-                const filePath = req.file.path;
-                res.send(send.getOkSendData({
-                    path: filePath
-                }, '文件上传成功!'))
-            });
+            const fileName = `${Date.now()}-${req.file.originalname}`;
+            const d = await this.oss.unLoadingFile(req.file.buffer, fileName);
+            res.send(send.getOkSendData({
+                path: d
+            }, '文件上传成功!'))
+            // const uploadSingle = this.multer.single('file'); // 'file' 应与前端FormData中的key对应
+            // uploadSingle(req, res, async (error) => {
+            //     if (error) {
+            //         console.error(error);
+            //         return res.status(500).send('文件上传出错！');
+            //     }
+            //     // 文件上传成功，此处可以添加额外的逻辑，如保存文件信息到数据库等
+            //     const filePath = req.file.path;
+            //     const d = await this.oss.unLoadingFile(req.file.buffer, filePath);
+
+            // });
         } catch (error) {
             res.send(send.getNoSendData(error.message))
         }
