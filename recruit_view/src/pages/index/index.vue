@@ -175,7 +175,6 @@ export default {
       });
       this.company = {
         ...data,
-        companyLogo: HTTPURL + data.companyLogo,
         positionList: data.positionList.map(item => ({
           ...item,
           isShowContent: false

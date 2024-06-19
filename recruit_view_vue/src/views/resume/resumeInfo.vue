@@ -214,7 +214,6 @@ export default {
             ...data,
             politicalStatus: getLabelByEquals(PoliticalStatusEnum, item => item.key === data.politicalStatus) || '',
             jobSeekerStatus: getLabelByEquals(JobSeekerStatusEnum, item => item.key === data.jobSeekerStatus) || '',
-            avatar: process.env.VUE_APP_BASE_API + data.avatar,
             earliestStartDate: moment(data.earliestStartDate).format('yyyy-MM-DD'),
             birthday: moment(data.birthday).format('yyyy-MM-DD'),
             workExperienceList: data.workExperienceList.map(item => {
