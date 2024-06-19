@@ -87,6 +87,15 @@ export class GoogleBrowserServer {
             await this.init()
             console.log(hintData.hint);
             page = await this.browser.newPage();
+
+            await page.emulateMedia('print');
+            await page.evaluateOnNewDocument(() => {
+                const link = document.createElement('link');
+                link.rel = 'stylesheet';
+                link.href = 'https://fonts.googleapis.com/css?family=Noto+Sans+SC&display=swap';
+                document.head.appendChild(link);
+            });
+
             await page.goto(url, {
                 waitUntil: 'networkidle0',
                 timeout: 0

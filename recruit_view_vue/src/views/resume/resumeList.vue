@@ -16,10 +16,10 @@
     @change="getList"
 
   >
-<!--
-    type="selection"
-    @search-icon-click="getList"
--->
+    <!--
+        type="selection"
+        @search-icon-click="getList"
+    -->
     <div slot="header">
       <div>
         <el-form inline class="form-inline" @submit.native.prevent>
@@ -404,30 +404,25 @@ export default {
           this.$message.warning('获取下载地址错误');
           return
         }
-
-        // 替换为你的OSS文件URL
-        const pdfUrl = data.url;
-        // 使用axios获取文件的响应体
-        const response = await axios.get(pdfUrl, {responseType: 'blob'});
-
-        // 创建Blob对象
-        const blob = new Blob([response.data], {type: 'application/pdf'});
-
-        // 创建隐藏的可下载链接
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${row.applicationKey}.pdf`; // 自定义文件名
-        document.body.appendChild(link);
-
-        // 触发点击
-        link.click();
-
-        // 清理URL和link元素
-        URL.revokeObjectURL(link.href);
-        link.remove();
+        this.downloadFile(data.url, `${row.applicationKey}.pdf`)
       } catch (error) {
         console.error('下载PDF文件时发生错误:', error);
       }
+    },
+
+    downloadFile(url, fileName = 'download') {
+      // 创建隐藏的a标签
+      const link = document.createElement('a');
+      link.style.display = 'none';
+      document.body.appendChild(link);
+
+      // 设置下载链接和文件名
+      link.href = url;
+      link.download = fileName;
+
+      // 触发点击事件开始下载，然后移除a标签
+      link.click();
+      document.body.removeChild(link);
     },
   }
 }
